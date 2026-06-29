@@ -41,4 +41,9 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+	 @GetMapping("/")
+    public String health() {
+        return "AI Placement Assistant API Running";
+    }
+
 }
