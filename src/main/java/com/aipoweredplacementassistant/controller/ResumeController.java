@@ -38,6 +38,7 @@ public class ResumeController {
     private JwtUtil jwtUtil;
     
 
+@PostMapping("/uploadresume")    
 public ResumeResponse uploadResume(
         String email,
         MultipartFile file) {
