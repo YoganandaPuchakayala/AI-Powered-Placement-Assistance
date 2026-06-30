@@ -2,6 +2,7 @@ package com.aipoweredplacementassistant.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.aipoweredplacementassistant.dto.CoverLetterRequest;
 import com.aipoweredplacementassistant.service.CoverLetterService;
@@ -10,6 +11,7 @@ import com.aipoweredplacementassistant.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/coverletter")
 public class CoverLetterController {
 
