@@ -62,7 +62,7 @@ public class ResumeController {
 
         return new ResumeResponse(
                 "Resume fetched successfully",
-                resume.getFileUrl()
+                resume.getFileUrl(), resume.getFileName()
         );
     }
     
