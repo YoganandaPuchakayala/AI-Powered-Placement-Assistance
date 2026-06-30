@@ -38,18 +38,54 @@ public class ResumeController {
     private JwtUtil jwtUtil;
     
 
-    @PostMapping("/uploadresume")
-    public ResumeResponse uploadResume(
-            @RequestParam("file") MultipartFile file,
-            HttpServletRequest request) {
+public ResumeResponse uploadResume(
+        String email,
+        MultipartFile file) {
 
-        String authHeader = request.getHeader("Authorization");
-        String token = authHeader.substring(7);
+    User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String email = jwtUtil.extractEmail(token);
+    Resume existingResume = resumeRepository
+            .findByUserEmail(email)
+            .orElse(null);
 
-        return resumeService.uploadResume(email, file);
+    // User already has a resume
+    if (existingResume != null) {
+
+        // Delete old file from storage
+        supabaseStorageService.deleteFile(
+                existingResume.getFileUrl());
+
+        // Upload new file
+        String newFileUrl =
+                supabaseStorageService.uploadFile(file);
+
+        // Update existing record
+        existingResume.setFileUrl(newFileUrl);
+
+        resumeRepository.save(existingResume);
+
+        return new ResumeResponse(
+                "Resume updated successfully",
+                newFileUrl
+        );
     }
+
+    // First upload
+    String fileUrl =
+            supabaseStorageService.uploadFile(file);
+
+    Resume resume = new Resume();
+    resume.setUser(user);
+    resume.setFileUrl(fileUrl);
+
+    resumeRepository.save(resume);
+
+    return new ResumeResponse(
+            "Resume uploaded successfully",
+            fileUrl
+    );
+}
     
     @GetMapping("/readmyresume")
     public ResumeResponse getMyResume(HttpServletRequest request) {
