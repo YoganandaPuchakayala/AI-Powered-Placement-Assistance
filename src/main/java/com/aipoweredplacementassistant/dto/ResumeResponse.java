@@ -4,10 +4,12 @@ public class ResumeResponse {
 
     private String message;
     private String data;
+    private String fileName;
 
-    public ResumeResponse(String message, String data) {
+    public ResumeResponse(String message, String data, String fileName) {
         this.message = message;
         this.data = data;
+        this.fileName = fileName;
     }
 
     public String getMessage() {
@@ -16,5 +18,9 @@ public class ResumeResponse {
 
     public String getdata() {
         return data;
+    }
+
+    public String getfileName(){
+        return fileName;
     }
 }
