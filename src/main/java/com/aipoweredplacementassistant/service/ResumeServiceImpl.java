@@ -1,7 +1,5 @@
 package com.aipoweredplacementassistant.service;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +18,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Autowired
     private UserRepository userRepository;
-    
+
     @Autowired
     private SupabaseStorageService storageService;
 
@@ -30,20 +28,21 @@ public class ResumeServiceImpl implements ResumeService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Upload new file to Supabase
+        // Upload file to Supabase
         String fileUrl = storageService.upload(file);
+
+        String fileName = file.getOriginalFilename();
 
         System.out.println("Generated URL = " + fileUrl);
 
-        // Check whether user already has a resume
+        // Check existing resume
         Resume existingResume = resumeRepository
                 .findByUserEmail(email)
                 .orElse(null);
 
-        // Update existing resume
         if (existingResume != null) {
 
-            existingResume.setFileName(file.getOriginalFilename());
+            existingResume.setFileName(fileName);
             existingResume.setFileType(file.getContentType());
             existingResume.setFileUrl(fileUrl);
 
@@ -51,13 +50,14 @@ public class ResumeServiceImpl implements ResumeService {
 
             return new ResumeResponse(
                     "Resume updated successfully",
-                    fileUrl
+                    fileUrl,
+                    fileName
             );
         }
 
-        // First-time upload
+        // First time upload
         Resume resume = new Resume();
-        resume.setFileName(file.getOriginalFilename());
+        resume.setFileName(fileName);
         resume.setFileType(file.getContentType());
         resume.setFileUrl(fileUrl);
         resume.setUser(user);
@@ -66,7 +66,8 @@ public class ResumeServiceImpl implements ResumeService {
 
         return new ResumeResponse(
                 "Resume uploaded successfully",
-                fileUrl
+                fileUrl,
+                fileName
         );
     }
 }
