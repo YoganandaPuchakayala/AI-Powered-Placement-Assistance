@@ -36,6 +36,7 @@ public class ResumeController {
 
     @Autowired
     private JwtUtil jwtUtil;
+    
 
     @PostMapping("/uploadresume")
     public ResumeResponse uploadResume(
