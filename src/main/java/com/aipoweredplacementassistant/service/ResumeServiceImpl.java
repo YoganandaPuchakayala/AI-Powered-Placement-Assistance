@@ -30,12 +30,32 @@ public class ResumeServiceImpl implements ResumeService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // 1. Upload to Supabase (you will implement this method)
+        // Upload new file to Supabase
         String fileUrl = storageService.upload(file);
-        
+
         System.out.println("Generated URL = " + fileUrl);
 
-        // 2. Save metadata
+        // Check whether user already has a resume
+        Resume existingResume = resumeRepository
+                .findByUserEmail(email)
+                .orElse(null);
+
+        // Update existing resume
+        if (existingResume != null) {
+
+            existingResume.setFileName(file.getOriginalFilename());
+            existingResume.setFileType(file.getContentType());
+            existingResume.setFileUrl(fileUrl);
+
+            resumeRepository.save(existingResume);
+
+            return new ResumeResponse(
+                    "Resume updated successfully",
+                    fileUrl
+            );
+        }
+
+        // First-time upload
         Resume resume = new Resume();
         resume.setFileName(file.getOriginalFilename());
         resume.setFileType(file.getContentType());
@@ -44,6 +64,9 @@ public class ResumeServiceImpl implements ResumeService {
 
         resumeRepository.save(resume);
 
-        return new ResumeResponse("Resume uploaded successfully", fileUrl);
+        return new ResumeResponse(
+                "Resume uploaded successfully",
+                fileUrl
+        );
     }
 }
