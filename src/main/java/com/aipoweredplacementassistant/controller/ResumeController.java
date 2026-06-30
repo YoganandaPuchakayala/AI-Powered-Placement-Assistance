@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.aipoweredplacementassistant.dto.JobMatchRequest;
 import com.aipoweredplacementassistant.dto.ResumeResponse;
@@ -17,6 +18,7 @@ import com.aipoweredplacementassistant.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/resume")
 public class ResumeController {
 
