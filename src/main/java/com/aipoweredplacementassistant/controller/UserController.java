@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.aipoweredplacementassistant.dto.UserResponse;
 import com.aipoweredplacementassistant.dto.UserUpdateRequest;
@@ -16,6 +17,7 @@ import com.aipoweredplacementassistant.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/users")
 public class UserController {
 	
