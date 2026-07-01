@@ -27,14 +27,29 @@ public class GeminiService {
             Analyze the following resume and return ONLY valid JSON.
 
             {
-              "name":"",
-              "email":"",
-              "phone":"",
-              "skills":[],
-              "experienceYears":0,
-              "education":[],
-              "summary":""
+                  "name":"",
+                  "email":"",
+                  "phone":"",
+                  "skills":[],
+                  "experienceYears":0,
+                  "education":[],
+                  "summary":"",
+                  "atsScore":0,
+                  "profileStrength":0,
+                  "recommendedRoles":[],
+                  "careerLevel":"",
+                  "topDomain":"",
+                  "strengths":[]
             }
+
+            Rules:
+                - atsScore should be from 0 to 100.
+                - profileStrength should be from 0 to 100.
+                - recommendedRoles should contain 3 to 5 suitable job roles.
+                - careerLevel should be one of:
+                  ["Fresher","Junior","Mid-Level","Senior"].
+                - topDomain should represent the candidate's strongest domain.
+                - strengths should contain 3 to 5 candidate strengths.
 
             Resume:
             """ + resumeText;
